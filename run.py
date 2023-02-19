@@ -78,14 +78,26 @@ def calculate_surplus_row(sales_row):
 
     return surplus_row
 
+def get_last5_sales():
+    """
+    collects last 5 days of sales numbers
+    returns a list of lists
+    """
+    sales = SHEET.worksheet("sales")
+    columns=[]
+    for i in range(1,7):
+        column= sales.col_values(i)
+        columns.append(column[-5:])
+    return columns
+
 
 def main():
     """
     main program flow
     """
-    sales_row = get_sales_row()
-    update_worksheet("sales", sales_row)
-    update_worksheet("surplus", calculate_surplus_row(sales_row))
-
+    # sales_row = get_sales_row()
+    # update_worksheet("sales", sales_row)
+    # update_worksheet("surplus", calculate_surplus_row(sales_row))
+    get_last5_sales()
 
 main()
