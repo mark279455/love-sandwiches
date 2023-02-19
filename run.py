@@ -50,22 +50,13 @@ def validate_data(data):
     return True
 
 
-def update_sales_worksheet(sales_row):
+def update_worksheet(name, data_row):
     """
-    update sales worksheet, add new row with the list data provided
+    update 'name' worksheet, add new row with the list data provided
     """
-    print("Updating sales worksheet")
-    sales_worksheet = SHEET.worksheet("sales")
-    sales_worksheet.append_row(sales_row)
-    print("Update success\n")
-
-def update_surplus_worksheet(surplus_row):
-    """
-    update surplus worksheet, add new row with the list data provided
-    """
-    print("Updating surplus worksheet")
-    surplus_worksheet = SHEET.worksheet("surplus")
-    surplus_worksheet.append_row(surplus_row)
+    print(f"Updating {name} worksheet")
+    worksheet = SHEET.worksheet(name)
+    worksheet.append_row(data_row)
     print("Update success\n")
 
 
@@ -77,7 +68,7 @@ def calculate_surplus_row(sales_row):
     posiive result = waste
     negative result = extra made when stock was exhausted
     """
-    print("Caloculating surplus data...")
+    print("Calculating surplus data...")
     stock = SHEET.worksheet("stock").get_all_values()
     stock_row = stock[-1]
     # stock_row = [int(num) for num in stock_row]
@@ -93,9 +84,8 @@ def main():
     main program flow
     """
     sales_row = get_sales_row()
-    update_sales_worksheet(sales_row)
-    # surplus_row = calculate_surplus_row(sales_row)
-    update_surplus_worksheet(calculate_surplus_row(sales_row))
+    update_worksheet("sales", sales_row)
+    update_worksheet("surplus", calculate_surplus_row(sales_row))
 
 
 main()
