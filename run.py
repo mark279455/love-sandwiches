@@ -18,7 +18,7 @@ SHEET = GSPREAD_CLIENT.open('love_sandwiches')
 # print(data)
 
 
-def get_sales_data():
+def get_sales_row():
     """
     Get sales figures from the user
     """
@@ -26,10 +26,11 @@ def get_sales_data():
         print("Please enter sales dta from the last market.")
         print("Should be 6 comma delimited numbers - 10,20,30,40,50,60\n")
         data_str = input("Enter your data here: ")
-        sales_data = data_str.split(",")
-        if validate_data(sales_data):
+        sales_row = data_str.split(",")
+        if validate_data(sales_row):
             break
-    return sales_data
+    sales_row = [int(num) for num in sales_row]
+    return sales_row
 
 
 def validate_data(data):
@@ -49,17 +50,26 @@ def validate_data(data):
     return True
 
 
-def update_sales_worksheet(data):
+def update_sales_worksheet(sales_row):
     """
     update sales worksheet, add new row with the list data provided
     """
     print("Updating sales worksheet")
     sales_worksheet = SHEET.worksheet("sales")
-    sales_worksheet.append_row(data)
+    sales_worksheet.append_row(sales_row)
+    print("Update success\n")
+
+def update_surplus_worksheet(surplus_row):
+    """
+    update surplus worksheet, add new row with the list data provided
+    """
+    print("Updating surplus worksheet")
+    surplus_worksheet = SHEET.worksheet("surplus")
+    surplus_worksheet.append_row(surplus_row)
     print("Update success\n")
 
 
-def calculate_surplus_data(sales_row):
+def calculate_surplus_row(sales_row):
     """
     comapere sales with stockand calculate surplus for each type
 
@@ -82,10 +92,10 @@ def main():
     """
     main program flow
     """
-    data = get_sales_data()
-    data = [int(num) for num in data]
-    update_sales_worksheet(data)
-    calculate_surplus_data(data)
+    sales_row = get_sales_row()
+    update_sales_worksheet(sales_row)
+    # surplus_row = calculate_surplus_row(sales_row)
+    update_surplus_worksheet(calculate_surplus_row(sales_row))
 
 
 main()
