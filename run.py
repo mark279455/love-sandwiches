@@ -78,26 +78,46 @@ def calculate_surplus_row(sales_row):
 
     return surplus_row
 
+
 def get_last5_sales():
     """
     collects last 5 days of sales numbers
     returns a list of lists
     """
     sales = SHEET.worksheet("sales")
-    columns=[]
-    for i in range(1,7):
-        column= sales.col_values(i)
+    columns = []
+    for i in range(1, 7):
+        column = sales.col_values(i)
         columns.append(column[-5:])
     return columns
+
+
+def calculate_stock_data(sales_columns):
+    """
+    calculate average stock for each type and add 10%
+    """
+    print(calculate_stock_data)
+    new_stock_data = []
+
+    for column in sales_columns:
+        int_column = [int(num) for num in column]
+        average = sum(int_column) / len(int_column)
+        stock_num = average * 1.1
+        new_stock_data.append(round(stock_num))
+
+    return new_stock_data
 
 
 def main():
     """
     main program flow
     """
-    # sales_row = get_sales_row()
-    # update_worksheet("sales", sales_row)
-    # update_worksheet("surplus", calculate_surplus_row(sales_row))
-    get_last5_sales()
+    sales_row = get_sales_row()
+    update_worksheet("sales", sales_row)
+    update_worksheet("surplus", calculate_surplus_row(sales_row))
+    sales_columns = get_last5_sales()
+    predicted_stock_data = calculate_stock_data(sales_columns)
+    update_worksheet("stock", predicted_stock_data)
+
 
 main()
