@@ -1,5 +1,7 @@
 import gspread
 from google.oauth2.service_account import Credentials
+from colorama import just_fix_windows_console
+just_fix_windows_console()
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -119,7 +121,7 @@ def main():
     update_worksheet("stock", predicted_stock_data)
     return predicted_stock_data
 
-
+print('\x1b[6;30;42m' + 'Success!' + '\x1b[0m')
 stock_data = main()
 
 # Write you code below this comment
